@@ -1,0 +1,139 @@
+# =============================================================================
+# Lattice configuration
+# =============================================================================
+# Defines the lattice. Non-monatomic gases require a second population.
+#   - Monatomic gases: set distributions to 49
+#   - Custom adiabatic constant flows: set distributions to 98
+lattice:
+  dual: true            # do not modify
+  fields: 8              # do not modify
+  distributions: 98
+
+# =============================================================================
+# Solver configuration
+# =============================================================================
+solver:
+  # Settings for GLFW interactive rendering. Do not modify.
+  commandBuffer:
+    autoset: false
+    executeOnRun: false
+    field_max: 0.005
+    field_min: 0
+
+  # Defines the streaming step. By default, a special streaming technique
+  # is employed to reduce buffer size. Do not modify.
+  buffering:
+    mode: compressed
+    buffer_size: 4
+
+  # Do not modify.
+  geometry_file:
+    path: "../unused.yaml"
+
+# =============================================================================
+# Device memory configuration
+# =============================================================================
+# Do not modify.
+memory:
+  mode: Device
+  buffers:
+    device:
+      fields: DevicePure
+      distributions: DevicePure
+    host:
+      fields: HostGeneric
+      distributions: HostGeneric
+
+# =============================================================================
+# Rendering window
+# =============================================================================
+# Width and height of the rendering window.
+rendering:
+  render_window:
+    x: 1900
+    y: 900
+
+# =============================================================================
+# Runtime configuration
+# =============================================================================
+runtime:
+  # GPU thread configuration. Can be modified.
+  # NOTE: using more than 512 threads is not recommended. Most CUDA devices
+  # have a hard limit of 1024 threads.
+  thread_config:
+    x: 32
+    y: 2
+    z: 1
+
+  # Logging / output of the solver. Set to false if not required.
+  verbose_output: true
+
+  # Precision selection. For the current implementation, all must be
+  # either float32 or float64.
+  precision:
+    DRAM: float4        # double4_32a
+    register: float     # double
+    compute: float       # double
+
+  # Debugging options. Do not modify.
+  solver:
+    alphaMode: False
+    kernel_debug: false
+
+  # Rendering screen dimensions. If no GLFW renderer is present, must
+  # match the render_window dimensions declared above.
+  rendering:
+    render_window:
+      x: 1900
+      y: 900
+
+    # OpenGL / rendering settings. Do not modify.
+    frame_rate: 60
+    passes_per_frame: 1
+    show_window: true
+
+    # Render provider. DIRECT => FFMPEG, GLFW => OpenGL + GLFW.
+    renderer: GLFW
+
+    # Shaders. Do not modify.
+    compute_shader: "../Rendering/shaders/compute.glsl"
+    vertex_shader: "../Rendering/shaders/vertex.glsl"
+    fragment_shader: "../Rendering/shaders/fragment.glsl"
+
+  # FFmpeg encoding settings.
+  encoding:
+    enabled: true
+    # args: "ffmpeg -r 60 -f rawvideo -pix_fmt rgb24 -s %dx%d -i - -threads 0 -preset fast -y -pix_fmt yuv420p -crf 50  ../Results/Videos/output.mp4"
+    # args: "ffmpeg -f rawvideo -pix_fmt rgb24 -s %dx%d -r 20 -i - -c:v ffv1 -y ../Results/Videos/test.mkv"
+    args: "ffmpeg -r 60 -f rawvideo -pix_fmt rgb24 -s %dx%d -i - -threads 0 -preset slow -y -pix_fmt yuv420p -crf 18  ../Results/Videos/"
+    # Number of frames before the solver exits.
+    N_FRAMES: 100000
+
+  # Logging folders and levels.
+  logging:
+    logging_level: 3
+    logging_folder: "../Results/Logs/"
+    solver_log: "../Results/Logs/solver_log.log"
+    memory_log: "../Results/Logs/memory_log.log"
+
+# =============================================================================
+# Debug mode
+# =============================================================================
+# Enables assertions / kernel breaks in case the system becomes ill-conditioned.
+# Important to have on for highly turbulent / high supersonic regime flows.
+DEBUG_MODE: FALSE
+
+# =============================================================================
+# Commands
+# =============================================================================
+commands:
+  # Do not modify.
+  kernel_debug: true
+  autoset: false
+  execute: true
+  screen_limits_x: 0.005
+  screen_limits_y: 0.000
+  selected_field: 2
+
+  # Ratio of simulation frames to rendering frames.
+  runs_per_frame: 2
