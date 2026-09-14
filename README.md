@@ -1,5 +1,7 @@
 ## This repository contains examples & tutorials showcasing the use of shockFLOW - a CUDA based 2D  GPU transonic CFD solver.
-
+For detailed information on the examples, you can look into the files wthin this repo. These provide direct ways of seeing how each example is set up behind the scenes with corresponding settings and configuration files.
+All of these are abstracted within the examples module of shockFLOW, for more details check the Wiki page of this repo. 
+For the official repo, see https://github.com/DKrasauskas/shockFLOW
 
 # tutorial 1: Riemann Problem
 <img width="2200" height="1600" alt="image" src="https://github.com/user-attachments/assets/bab34b54-b5c6-4719-be2f-425079a87d00" />
